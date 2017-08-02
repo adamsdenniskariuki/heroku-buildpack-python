@@ -196,8 +196,8 @@ fi
 invoke --version
 
 echo "starting bower"
-python -c 'import pty, sys; pty.spawn(sys.argv[1:])' | invoke create-settings  --settings-path ./wger/settings.py --database-path ./database.sqlite
-python -c 'import pty, sys; pty.spawn(sys.argv[1:])' | invoke bootstrap-wger --settings-path ./wger/settings.py --no-start-server
+python -c 'import pty, sys; pty.spawn(sys.argv[1:])' | invoke create-settings  --settings-path ./settings.py --database-path ./database.sqlite
+python -c 'import pty, sys; pty.spawn(sys.argv[1:])' | invoke bootstrap-wger --settings-path ./settings.py --no-start-server
 echo "done"
 
 # Django collectstatic support.

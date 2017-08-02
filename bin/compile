@@ -192,6 +192,13 @@ if [[ ! "$BUILD_DIR" == "/app" ]]; then
   deep-cp /app/.heroku/src $BUILD_DIR/.heroku/src
 fi
 
+#add bower etc
+invoke --version
+
+echo "starting bower"
+python -c 'import pty, sys; pty.spawn(sys.argv[1:])' | invoke create-settings  --settings-path ./wger/settings.py --database-path ./database.sqlite
+python -c 'import pty, sys; pty.spawn(sys.argv[1:])' | invoke bootstrap-wger --settings-path ./wger/settings.py --no-start-server
+echo "done"
 
 # Django collectstatic support.
 let start=$(nowms)

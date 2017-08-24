@@ -82,6 +82,17 @@ export LIBRARY_PATH=/app/.heroku/vendor/lib:/app/.heroku/python/lib:$LIBRARY_PAT
 export LD_LIBRARY_PATH=/app/.heroku/vendor/lib:/app/.heroku/python/lib:$LD_LIBRARY_PATH
 export PKG_CONFIG_PATH=/app/.heroku/vendor/lib/pkg-config:/app/.heroku/python/lib/pkg-config:$PKG_CONFIG_PATH
 
+#Load Environmental Variables
+whitelist_regex=${2:-''}
+blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
+if [ -d "$ENV_DIR" ]; then
+  for e in $(ls $ENV_DIR); do
+    echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
+    export "$e=$(cat $ENV_DIR/$e)"
+    :
+  done
+fi
+
 # Switch to the repo's context.
 cd $BUILD_DIR
 
@@ -190,17 +201,6 @@ mtime "nltk.download.time" "${start}"
 if [[ ! "$BUILD_DIR" == "/app" ]]; then
   rm -fr $BUILD_DIR/.heroku/src
   deep-cp /app/.heroku/src $BUILD_DIR/.heroku/src
-fi
-
-#Load Environmental Variables
-whitelist_regex=${2:-''}
-blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
-if [ -d "$ENV_DIR" ]; then
-  for e in $(ls $ENV_DIR); do
-    echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
-    export "$e=$(cat $ENV_DIR/$e)"
-    :
-  done
 fi
 
 #add bower etc

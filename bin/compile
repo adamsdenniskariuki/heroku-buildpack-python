@@ -83,15 +83,12 @@ export LD_LIBRARY_PATH=/app/.heroku/vendor/lib:/app/.heroku/python/lib:$LD_LIBRA
 export PKG_CONFIG_PATH=/app/.heroku/vendor/lib/pkg-config:/app/.heroku/python/lib/pkg-config:$PKG_CONFIG_PATH
 
 #Load Environmental Variables
-whitelist_regex=${2:-''}
-blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
-if [ -d "$ENV_DIR" ]; then
-  for e in $(ls $ENV_DIR); do
-    echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
-    export "$e=$(cat $ENV_DIR/$e)"
-    :
-  done
-fi
+export SOCIAL_AUTH_FACEBOOK_KEY='1938573856396950'
+export SOCIAL_AUTH_FACEBOOK_SECRET='f101d0b25c84313d8b25f1a7264e5093'
+export SOCIAL_AUTH_GITHUB_KEY='010d676cf3df67b44ad0'
+export SOCIAL_AUTH_GITHUB_SECRET='dd6e7ee18564e62bed5a9d32afe2094ef9b84a05'
+export SOCIAL_AUTH_TWITTER_KEY='0uFZxGZPad4mxhlpMQDA3Fh19'
+export SOCIAL_AUTH_TWITTER_SECRET='7YLvI2mjZtkzogBI3iOSJ38JxC3kt0eceJlRzvq7syqxQpwJLP'
 
 # Switch to the repo's context.
 cd $BUILD_DIR

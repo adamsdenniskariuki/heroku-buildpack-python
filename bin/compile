@@ -82,22 +82,19 @@ export LIBRARY_PATH=/app/.heroku/vendor/lib:/app/.heroku/python/lib:$LIBRARY_PAT
 export LD_LIBRARY_PATH=/app/.heroku/vendor/lib:/app/.heroku/python/lib:$LD_LIBRARY_PATH
 export PKG_CONFIG_PATH=/app/.heroku/vendor/lib/pkg-config:/app/.heroku/python/lib/pkg-config:$PKG_CONFIG_PATH
 
-echo "env starting"
-whitelist_regex=${2:-''}
-blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
-for e in $(ls $ENV_DIR); do
-  echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
-  export "$e=$(cat $ENV_DIR/$e)"
-  :
-done
+echo "getting env vars"
+
+ENVS=(curl -n https://api.heroku.com/apps/samurais-wger/config-vars   -H "Accept: application/vnd.heroku+json; version=3")
 
 #Load Environmental Variables
-# export SOCIAL_AUTH_FACEBOOK_KEY='1938573856396950'
-# export SOCIAL_AUTH_FACEBOOK_SECRET='f101d0b25c84313d8b25f1a7264e5093'
-# export SOCIAL_AUTH_GITHUB_KEY='010d676cf3df67b44ad0'
-# export SOCIAL_AUTH_GITHUB_SECRET='dd6e7ee18564e62bed5a9d32afe2094ef9b84a05'
-# export SOCIAL_AUTH_TWITTER_KEY='0uFZxGZPad4mxhlpMQDA3Fh19'
-# export SOCIAL_AUTH_TWITTER_SECRET='7YLvI2mjZtkzogBI3iOSJ38JxC3kt0eceJlRzvq7syqxQpwJLP'
+export SOCIAL_AUTH_FACEBOOK_KEY=ENVS['SOCIAL_AUTH_FACEBOOK_KEY']
+export SOCIAL_AUTH_FACEBOOK_SECRET=ENVS['SOCIAL_AUTH_FACEBOOK_SECRET']
+export SOCIAL_AUTH_GITHUB_KEY=ENVS['SOCIAL_AUTH_GITHUB_KEY']
+export SOCIAL_AUTH_GITHUB_SECRET=ENVS['SOCIAL_AUTH_GITHUB_SECRET']
+export SOCIAL_AUTH_TWITTER_KEY=ENVS['SOCIAL_AUTH_TWITTER_KEY']
+export SOCIAL_AUTH_TWITTER_SECRET=ENVS['SOCIAL_AUTH_TWITTER_SECRET']
+
+echo "env vars set!"
 
 # Switch to the repo's context.
 cd $BUILD_DIR

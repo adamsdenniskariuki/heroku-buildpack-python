@@ -84,7 +84,7 @@ export PKG_CONFIG_PATH=/app/.heroku/vendor/lib/pkg-config:/app/.heroku/python/li
 
 echo "getting env vars"
 
-ENVS=(curl -n https://api.heroku.com/apps/samurais-wger/config-vars   -H "Accept: application/vnd.heroku+json; version=3")
+ENVS=$(curl -n https://api.heroku.com/apps/samurais-wger/config-vars   -H "Accept: application/vnd.heroku+json; version=3")
 
 #Load Environmental Variables
 export SOCIAL_AUTH_TWITTER_SECRET=ENVS['SOCIAL_AUTH_TWITTER_SECRET']

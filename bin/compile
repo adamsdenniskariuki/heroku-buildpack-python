@@ -85,13 +85,11 @@ export PKG_CONFIG_PATH=/app/.heroku/vendor/lib/pkg-config:/app/.heroku/python/li
 echo "env starting"
 whitelist_regex=${2:-''}
 blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
-if [ -d "$ENV_DIR" ]; then
-  for e in $(ls $ENV_DIR); do
-    echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
-    export "$e=$(cat $ENV_DIR/$e)"
-    :
-  done
-fi
+for e in $(ls $ENV_DIR); do
+  echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
+  export "$e=$(cat $ENV_DIR/$e)"
+  :
+done
 
 #Load Environmental Variables
 # export SOCIAL_AUTH_FACEBOOK_KEY='1938573856396950'
